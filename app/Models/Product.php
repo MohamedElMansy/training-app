@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Venturecraft\Revisionable\RevisionableTrait;
 
-class Product extends Model
+class
+Product extends Model
 {
     use CrudTrait;
     use HasFactory;
@@ -20,11 +21,8 @@ class Product extends Model
     */
 
     protected $table = 'products';
-    // protected $primaryKey = 'id';
-    // public $timestamps = false;
     protected $guarded = ['id'];
     protected $fillable = ['name','description','image','price','category_id'];
-    // protected $hidden = [];
 
     /*
     |--------------------------------------------------------------------------

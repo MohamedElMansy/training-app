@@ -20,8 +20,6 @@ class ProductCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-//    use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
-//    use \Backpack\CRUD\app\Http\Controllers\Operations\CloneOperation;
     use \Backpack\ReviseOperation\ReviseOperation;
 
     /**
@@ -34,8 +32,6 @@ class ProductCrudController extends CrudController
         CRUD::setModel(\App\Models\Product::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/product');
         CRUD::setEntityNameStrings('product', 'products');
-
-        // CRUD::addClause('where', 'price', '<', 10);  customize the query of the list
     }
 
     /**
@@ -46,15 +42,6 @@ class ProductCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-//        filetr (pro)
-//        CRUD::filter('name')
-//            ->type('text')
-//            ->label('The name')
-//            ->whenActive(function($value) {
-//                CRUD::addClause('where', 'name', 'LIKE', '%'.$value.'%');
-//            })->else(function() {
-//
-//            });
         CRUD::setOperationSetting('showEntryCount', false);
         CRUD::column('name')->type('text');
         CRUD::column('image')->type('image')->disk('public');
@@ -85,14 +72,7 @@ class ProductCrudController extends CrudController
             'disk' => 'public', // the disk where file will be stored
             'path' => 'uploads', // the path inside the disk where file will be stored
         ]);
-//        events create/update
-//        CRUD::field('category_id')->type('number')->events([
-//            'saving'=>function($entry){
-//                $category=Category::First();
-//                if($category)
-//                    $entry->category_id=$category->id;
-//            }
-//        ]);
+
         CRUD::field('category');
     }
 
@@ -118,13 +98,4 @@ class ProductCrudController extends CrudController
         $this->setupListOperation();
     }
 
-//    reorder products list
-//    protected function setupReorderOperation()
-//    {
-//        // define which model attribute will be shown on draggable elements
-//        CRUD::set('reorder.label', 'name');
-//        // define how deep the admin is allowed to nest the items
-//        // for infinite levels, set it to 0
-//        CRUD::set('reorder.max_level', 2);
-//    }
 }
