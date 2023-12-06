@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ProductRequest;
+use App\Models\Category;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -19,9 +20,13 @@ class ProductCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+//    use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
+//    use \Backpack\CRUD\app\Http\Controllers\Operations\CloneOperation;
+    use \Backpack\ReviseOperation\ReviseOperation;
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -29,16 +34,28 @@ class ProductCrudController extends CrudController
         CRUD::setModel(\App\Models\Product::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/product');
         CRUD::setEntityNameStrings('product', 'products');
+
+        // CRUD::addClause('where', 'price', '<', 10);  customize the query of the list
     }
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
     protected function setupListOperation()
     {
+//        filetr (pro)
+//        CRUD::filter('name')
+//            ->type('text')
+//            ->label('The name')
+//            ->whenActive(function($value) {
+//                CRUD::addClause('where', 'name', 'LIKE', '%'.$value.'%');
+//            })->else(function() {
+//
+//            });
+        CRUD::setOperationSetting('showEntryCount', false);
         CRUD::column('name')->type('text');
         CRUD::column('image')->type('image')->disk('public');
         CRUD::column('description')->type('text');
@@ -52,7 +69,7 @@ class ProductCrudController extends CrudController
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
@@ -68,12 +85,20 @@ class ProductCrudController extends CrudController
             'disk' => 'public', // the disk where file will be stored
             'path' => 'uploads', // the path inside the disk where file will be stored
         ]);
-        CRUD::field('category_id')->type('number'); // as dropdown relation field in pro version 
+//        events create/update
+//        CRUD::field('category_id')->type('number')->events([
+//            'saving'=>function($entry){
+//                $category=Category::First();
+//                if($category)
+//                    $entry->category_id=$category->id;
+//            }
+//        ]);
+        CRUD::field('category');
     }
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
@@ -84,7 +109,7 @@ class ProductCrudController extends CrudController
 
     /**
      * Define what happens when the show operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-show
      * @return void
      */
@@ -92,4 +117,14 @@ class ProductCrudController extends CrudController
     {
         $this->setupListOperation();
     }
+
+//    reorder products list
+//    protected function setupReorderOperation()
+//    {
+//        // define which model attribute will be shown on draggable elements
+//        CRUD::set('reorder.label', 'name');
+//        // define how deep the admin is allowed to nest the items
+//        // for infinite levels, set it to 0
+//        CRUD::set('reorder.max_level', 2);
+//    }
 }

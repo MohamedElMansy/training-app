@@ -5,11 +5,13 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class Product extends Model
 {
     use CrudTrait;
     use HasFactory;
+    use RevisionableTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -29,7 +31,10 @@ class Product extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
+    public function identifiableName()
+    {
+        return $this->name;
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
