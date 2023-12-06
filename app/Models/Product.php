@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Data\ProductData;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\LaravelData\WithData;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class
@@ -13,6 +15,7 @@ Product extends Model
     use CrudTrait;
     use HasFactory;
     use RevisionableTrait;
+    use WithData;
 
     /*
     |--------------------------------------------------------------------------
@@ -23,6 +26,7 @@ Product extends Model
     protected $table = 'products';
     protected $guarded = ['id'];
     protected $fillable = ['name','description','image','price','category_id'];
+    protected $dataClass=ProductData::class;
 
     /*
     |--------------------------------------------------------------------------
