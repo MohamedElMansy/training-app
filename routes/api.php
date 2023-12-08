@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('products',['\App\Http\Controllers\api\ProductController','index']);
 Route::get('products/{id}',['\App\Http\Controllers\api\ProductController','show']);
+Route::put('products/{id}',['\App\Http\Controllers\api\ProductController','update']);
